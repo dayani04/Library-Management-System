@@ -1,0 +1,36 @@
+.service-item {
+    text-decoration: none;
+    padding: 20px;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    background-color: #fff;
+  }
+  
+  .service-item:hover,
+  .service-item:focus {
+    background-color: #e6ae59;
+    border-color:#e6ae59;
+  }
+  
+  .custom-icon {
+    color: #0d0a0b !important; 
+    transition: color 0.3s ease;
+  }
+
+  .service-item:hover .custom-icon,
+  .service-item:focus .custom-icon {
+    color: #ffff;
+  }
+
+.service-name {
+    color: #ac6d06; 
+    transition: color 0.3s ease;
+  }
+  
+  .service-item:hover .service-name {
+    color: #ffff; 
+  }
+
+  

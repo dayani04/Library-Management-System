@@ -1,0 +1,22 @@
+
+.UL-login-container {
+    width: 500px;
+   margin-top: 200px;
+   margin-bottom: 100px;
+    background-color: #fff;
+    align-items: center;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .login-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 150vh;
+    padding: 20px;
+    backdrop-filter: blur(5px); 
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
