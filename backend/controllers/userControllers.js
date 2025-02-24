@@ -1,5 +1,51 @@
-const Users = require("../models/userModel"); 
+const Users = require("../models/userModel");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+require('dotenv').config();
+
+const userLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await Users.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: "Invalid email or password" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: "Invalid email or password" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" } // Token expires in 1 hour
+    );
+
+    return res.status(200).json({ success: true, message: "Login successful", token });
+  } catch (err) {
+    console.error("Error logging in:", err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+// Fetch user profile using JWT
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;  // This comes from the token
+    const user = await Users.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json(user);  // Send user data as response
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error retrieving user profile" });
+  }
+};
 
 const getAllUsers = async (req, res) => {
   try {
@@ -81,33 +127,28 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const userLogin = async (req, res) => {
-  const { email, password } = req.body;
 
+const getUserByEmail = async (req, res) => {
   try {
-    const user = await Users.findOne({ email });
-
+    const user = await Users.findOne({ email: req.params.email });
     if (!user) {
-      return res.status(400).json({ success: false, message: "Invalid email or password" });
+      return res.status(404).json({ message: "User not found" });
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ success: false, message: "Invalid email or password" });
-    }
-
-    return res.status(200).json({ success: true, message: "Login successful" });
+    return res.status(200).json({ user });
   } catch (err) {
-    console.error("Error logging in:", err);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error(err);
+    return res.status(500).json({ message: "Error retrieving user details" });
   }
 };
 
+
 module.exports = {
+  userLogin,
+  getUserProfile,
   getAllUsers,
   addUser,
   getUserById,
   updateUser,
   deleteUser,
-  userLogin,
+  getUserByEmail,
 };

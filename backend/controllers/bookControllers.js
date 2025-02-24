@@ -14,36 +14,51 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
-// Controller functions
 const getAllBooks = async (req, res) => {
   try {
-    const books = await Book.find({});
+    const books = await Book.find({}, { title: 1, category: 1, imageUrls: 1, pdfPath: 1 }); // Include category and imageUrls
     res.json({ books });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+
+
 const getBookById = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid book ID' });
+  }
+
   try {
-    const book = await Book.findById(req.params.id);
-    if (!book) return res.status(404).json({ message: 'Book not found' });
-    res.json({ book });
+    const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.status(200).json({ book });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error fetching book:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
+
+
 const addBook = async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
     const newBook = new Book({
       title: req.body.title,
       author: req.body.author,
       genre: req.body.genre,
-      category: req.body.category, // Handle category here
+      category: req.body.category,
       imageUrls: req.body.imageUrls,
-      pdfPath: req.file.path,
+      pdfPath: req.file.path.replace(/\\/g, '/'), // Normalize Windows paths
       description: req.body.description,
     });
 
@@ -53,6 +68,9 @@ const addBook = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
 
 const updateBook = async (req, res) => {
   try {
@@ -82,7 +100,6 @@ const deleteBook = async (req, res) => {
 };
 
 module.exports = { getAllBooks, getBookById, addBook, updateBook, deleteBook };
-
 
 
 

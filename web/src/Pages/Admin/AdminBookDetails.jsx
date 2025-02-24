@@ -145,6 +145,25 @@ const BooksManagement = () => {
     ➕ Add New Admin
   </button>
 
+  <button
+  className="btn mb-3"
+  style={{
+    backgroundColor: "#e6ae59",
+    color: "#fff",
+    border: "none",
+    padding: "10px 20px",
+    fontSize: "16px",
+    position: "absolute",
+    top: "80px", // Adjust this value based on the height of your navbar
+    right: "20px",
+    zIndex: 10,
+  }}
+  onClick={() => window.location.href = "/RequestApproval"}
+>
+  Request Approval
+</button>
+
+
       <div className="row row-cols-1 row-cols-md-3 g-4">
         {books.map((book) => (
           <div key={book._id} className="col">

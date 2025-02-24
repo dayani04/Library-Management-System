@@ -4,12 +4,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
-
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 
 mongoose
@@ -22,6 +23,7 @@ const userRoutes = require('./routes/userRoutes');
 const bookRoutes = require ("./routes/bookRoutes");
 const ordinaryLevelPassRoutes = require('./routes/ordinaryLevelPassRoutes');
 const advancedLevelPassRoutes = require('./routes/advancedLevelPassRoutes');
+const requestRoutes = require("./routes/requestRoutes");
 
 
 app.use("/admins", adminRoutes);
@@ -31,6 +33,8 @@ app.use('/uploads', express.static('uploads'));
 
 app.use('/api/ordinary-level-pass', ordinaryLevelPassRoutes);
 app.use('/api/advanced-level-pass',advancedLevelPassRoutes);
+app.use('/api/requests', requestRoutes);
+
 
 
 

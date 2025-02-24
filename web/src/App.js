@@ -1,3 +1,4 @@
+// App.js
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Pages/Home/Home';
@@ -10,9 +11,11 @@ import UserRegister from './Pages/User/UserRegister';
 import UserBookDetails from './Pages/User/UserBookDetails';
 import AdminBookDetails from './Pages/Admin/AdminBookDetails';
 import AdminPassPapersManagemet from './Pages/Admin/AdminPassPapersManagement';
-
 import OrdinaryLevelPassPaper from './Pages/User/OrdinaryLevelPassPaper';
 import AdvancedLevelPassPaper from './Pages/User/AdvancedLevelPassPaper';
+import UserProfile from './Pages/User/UserProfile';
+import RequestApproval from './Pages/Admin/RequestApproval';
+import ReadBook from './Pages/User/ReadBook';
 
 function App() {
   return (
@@ -28,9 +31,11 @@ function App() {
           <Route path="/UserBookDetails" element={<UserBookDetails />} />
           <Route path="/AdminBookDetails" element={<AdminBookDetails />} />
           <Route path="/AdminPassPapersManagemet" element={<AdminPassPapersManagemet />} />
-
           <Route path="/ordinary-level-pass" element={<OrdinaryLevelPassPaper />} />
           <Route path="/advanced-level-pass" element={<AdvancedLevelPassPaper />} />
+<Route path="/UserProfile" element={< UserProfile/>}/>
+<Route path="/RequestApproval" element={<RequestApproval/>}/>
+<Route path="/ReadBook" element={<ReadBook/>}/>
         </Routes>
         <Footer />
       </BrowserRouter>
